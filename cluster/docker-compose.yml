@@ -1,0 +1,125 @@
+services:
+  load-balancer:
+    hostname: rabbit-load-balancer
+    container_name: rabbit-load-balancer
+    image: nginx:stable-alpine3.21
+    ports:
+      - 5672:5672      # AMQP
+      - 15672:15672    # Management UI
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
+    deploy:
+      resources:
+        reservations:
+          cpus: "0.2"
+          memory: 128m
+        limits:
+          cpus: "0.4"
+          memory: 200m
+    depends_on:
+      rabbit-node1:
+        condition: service_healthy
+      rabbit-node2:
+        condition: service_healthy
+      rabbit-node3:
+        condition: service_healthy
+    networks:
+      - rabbitmq-cluster
+  rabbit-node1:
+    hostname: rabbit-node1
+    container_name: rabbit-node1
+    image: rabbitmq:3.13.7-management-alpine
+    environment:
+      TZ: Asia/Jakarta
+      RABBITMQ_DEFAULT_VHOST: /
+      RABBITMQ_DEFAULT_USER: hello
+      RABBITMQ_DEFAULT_PASS: yourpassword
+      RABBITMQ_DATA_DIR: /var/lib/rabbitmq
+      RABBITMQ_ERLANG_COOKIE: "e64b0fb4-3f03-43a7-b55f-469754a4c22d"
+    volumes:
+      - vol-rabbitmq-node1:/var/lib/rabbitmq
+      - ./config/rabbitmq.conf:/etc/rabbitmq/conf.d/10-defaults.conf
+    deploy:
+      resources:
+        reservations:
+          cpus: "0.2"
+          memory: 200m
+        limits:
+          cpus: "0.4"
+          memory: 400m
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 60s
+      retries: 5
+      start_period: 10s
+    networks:
+      - rabbitmq-cluster
+  rabbit-node2:
+    hostname: rabbit-node2
+    container_name: rabbit-node2
+    image: rabbitmq:3.13.7-management-alpine
+    environment:
+      TZ: Asia/Jakarta
+      RABBITMQ_DEFAULT_VHOST: /
+      RABBITMQ_DEFAULT_USER: hello
+      RABBITMQ_DEFAULT_PASS: yourpassword
+      RABBITMQ_DATA_DIR: /var/lib/rabbitmq
+      RABBITMQ_ERLANG_COOKIE: "e64b0fb4-3f03-43a7-b55f-469754a4c22d"
+    volumes:
+      - vol-rabbitmq-node2:/var/lib/rabbitmq
+      - ./config/rabbitmq.conf:/etc/rabbitmq/conf.d/10-defaults.conf
+    deploy:
+      resources:
+        reservations:
+          cpus: "0.2"
+          memory: 200m
+        limits:
+          cpus: "0.4"
+          memory: 400m
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 60s
+      retries: 5
+      start_period: 10s
+    networks:
+      - rabbitmq-cluster
+  rabbit-node3:
+    hostname: rabbit-node3
+    container_name: rabbit-node3
+    image: rabbitmq:3.13.7-management-alpine
+    environment:
+      TZ: Asia/Jakarta
+      RABBITMQ_DEFAULT_VHOST: /
+      RABBITMQ_DEFAULT_USER: hello
+      RABBITMQ_DEFAULT_PASS: yourpassword
+      RABBITMQ_DATA_DIR: /var/lib/rabbitmq
+      RABBITMQ_ERLANG_COOKIE: "e64b0fb4-3f03-43a7-b55f-469754a4c22d"
+    volumes:
+      - vol-rabbitmq-node3:/var/lib/rabbitmq
+      - ./config/rabbitmq.conf:/etc/rabbitmq/conf.d/10-defaults.conf
+    deploy:
+      resources:
+        reservations:
+          cpus: "0.2"
+          memory: 200m
+        limits:
+          cpus: "0.4"
+          memory: 400m
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 60s
+      retries: 5
+      start_period: 10s
+    networks:
+      - rabbitmq-cluster
+
+networks:
+  rabbitmq-cluster:
+
+volumes:
+  vol-rabbitmq-node1:
+  vol-rabbitmq-node2:
+  vol-rabbitmq-node3:
