@@ -72,9 +72,9 @@ rabbitmqctl cluster_status
 # Status cluster dapat juga dilihat di rabbit-node2 dan rabbit-node3
 ```
 
-Membuat queue dengan tipe `quorum` melalui RabbitMQ API di node `rabbit-node1`
+Membuat queue dengan tipe `quorum` melalui RabbitMQ API
 ```bash
-curl -u hello:yourpassword -XPUT 'http://localhost:8091/api/queues/%2F/test.queue1' \
+curl -u hello:yourpassword -XPUT 'http://localhost:15672/api/queues/%2F/test.queue1' \
 --header 'Content-Type: application/json' \
 --data '{
     "arguments": {
