@@ -1,7 +1,7 @@
 # RabbitMQ Cluster
 
 ## High Level Architecture
-![RabbitMQ Cluster](./assets/cluster.png)
+![RabbitMQ Cluster](../assets/cluster.png)
 
 ## Menjalankan RabbitMQ
 Membuat dan menjalankan **Load Balancer** dan **Node RabbitMQ**.
