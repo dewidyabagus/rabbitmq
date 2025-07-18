@@ -45,8 +45,8 @@ services:
           cpus: "0.2"
           memory: 200m
         limits:
-          cpus: "0.4"
-          memory: 400m
+          cpus: "0.5"
+          memory: 500m
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "ping"]
       interval: 10s
@@ -75,8 +75,8 @@ services:
           cpus: "0.2"
           memory: 200m
         limits:
-          cpus: "0.4"
-          memory: 400m
+          cpus: "0.5"
+          memory: 500m
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "ping"]
       interval: 10s
@@ -105,8 +105,8 @@ services:
           cpus: "0.2"
           memory: 200m
         limits:
-          cpus: "0.4"
-          memory: 400m
+          cpus: "0.5"
+          memory: 500m
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "ping"]
       interval: 10s
@@ -118,6 +118,7 @@ services:
 
 networks:
   rabbitmq-cluster:
+    name: rabbitmq-v4-network-cluster
 
 volumes:
   vol-rabbitmq-node1:
