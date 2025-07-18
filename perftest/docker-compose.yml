@@ -1,0 +1,18 @@
+services:
+  rabbit-perftest:
+    build: .
+    container_name: rabbit-perftest
+    ports:
+      - 8080:8080
+    environment:
+      RABBITMQ_PERF_TEST_LOGGERS: com.rabbitmq.perf=error
+    volumes:
+      - ./spec:/perf_test/spec:ro
+      - ./output:/perf_test/output
+    networks:
+      - rabbit-cluster
+
+networks:
+  rabbit-cluster:
+    name: rabbitmq-v4-network-cluster
+    external: true
